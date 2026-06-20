@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:health/health.dart';
 import 'package:life_coach/app/router/app_routes.dart';
+import 'package:life_coach/core/di/injection.dart';
+import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -18,16 +19,17 @@ class Dashboard extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
-                final health = Health();
-                await health.configure();
-                final granted = await health.requestAuthorization(
-                  [HealthDataType.STEPS],
-                  permissions: [HealthDataAccess.READ],
-                );
-                if (!context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Sağlık izni sonucu: $granted')),
-                );
+                final messenger = ScaffoldMessenger.of(context);
+                final repo = getIt<HealthRepository>();
+                final req = await repo.requestPermission();
+                final steps = req ? await repo.getTodaySteps() : 0;
+                if (!context.mounted) {
+                  messenger.showSnackBar(
+                    SnackBar(
+                      content: Text('İzin: $req · Bugünkü adım: $steps'),
+                    ),
+                  );
+                }
               },
               child: const Text('Sağlık iznini test et'),
             ),
