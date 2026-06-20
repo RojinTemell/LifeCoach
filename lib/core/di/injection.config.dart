@@ -14,6 +14,8 @@ import 'package:health/health.dart' as _i237;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:life_coach/core/di/register_model.dart' as _i847;
 import 'package:life_coach/core/services/app_info_services.dart' as _i842;
+import 'package:life_coach/features/dashboard/presentation/cubit/dashboard_cubit.dart'
+    as _i1012;
 import 'package:life_coach/features/health_data/data/datasource/health_device_datasource.dart'
     as _i319;
 import 'package:life_coach/features/health_data/data/repositories/health_repository_impl.dart'
@@ -36,6 +38,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i903.HealthRepository>(
       () => _i407.HealthRepositoryImpl(gh<_i319.HealthDeviceDataSource>()),
+    );
+    gh.factory<_i1012.DashboardCubit>(
+      () => _i1012.DashboardCubit(gh<_i903.HealthRepository>()),
     );
     return this;
   }
