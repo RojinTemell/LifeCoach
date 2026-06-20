@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:health/health.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,14 +14,14 @@ abstract interface class HealthDeviceDataSource {
 class HealthDeviceDataSourceImpl implements HealthDeviceDataSource {
   HealthDeviceDataSourceImpl(this._health);
   final Health _health;
-  static const List<HealthDataType> _types = [
-    HealthDataType.STEPS,
-    HealthDataType.DISTANCE_WALKING_RUNNING,
-  ];
-  static const List<HealthDataAccess> _permissions = [
-    HealthDataAccess.READ,
-    HealthDataAccess.READ,
-  ];
+
+  HealthDataType get _distanceType => Platform.isAndroid
+      ? HealthDataType.DISTANCE_DELTA
+      : HealthDataType.DISTANCE_WALKING_RUNNING;
+
+  List<HealthDataType> get _types => [HealthDataType.STEPS, _distanceType];
+  List<HealthDataAccess> get _permissions =>
+      _types.map((_) => HealthDataAccess.READ).toList();
 
   @override
   Future<bool> requestPermissions() async {
@@ -50,7 +52,7 @@ class HealthDeviceDataSourceImpl implements HealthDeviceDataSource {
     final now = DateTime.now();
     final midnight = DateTime(now.year, now.month, now.day);
     final points = await _health.getHealthDataFromTypes(
-      types: const [HealthDataType.DISTANCE_WALKING_RUNNING],
+      types: [_distanceType],
       startTime: midnight,
       endTime: now,
     );

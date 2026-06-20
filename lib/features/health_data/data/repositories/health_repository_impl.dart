@@ -14,9 +14,6 @@ class HealthRepositoryImpl implements HealthRepository {
   @override
   Future<Either<Failure, int>> getTodaySteps() async {
     try {
-      // if (!await _dataSource.hasPermissions()) {
-      //   return const Left(PermissionDeniedFailure());
-      // }
       return Right(await _dataSource.getTodaySteps());
     } on Exception catch (e) {
       return Left(HealthDataFailure(e.toString()));
