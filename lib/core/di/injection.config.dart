@@ -18,26 +18,39 @@ import 'package:life_coach/features/dashboard/presentation/cubit/dashboard_cubit
     as _i1012;
 import 'package:life_coach/features/health_data/data/datasource/health_device_datasource.dart'
     as _i319;
+import 'package:life_coach/features/health_data/data/datasource/health_local_datasource.dart'
+    as _i653;
 import 'package:life_coach/features/health_data/data/repositories/health_repository_impl.dart'
     as _i407;
 import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart'
     as _i903;
+import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModel = _$RegisterModel();
     gh.factory<_i237.Health>(() => registerModel.health);
+    await gh.factoryAsync<_i460.SharedPreferences>(
+      () => registerModel.prefs,
+      preResolve: true,
+    );
     gh.lazySingleton<_i842.AppInfoServices>(() => _i842.AppInfoServices());
     gh.lazySingleton<_i319.HealthDeviceDataSource>(
       () => _i319.HealthDeviceDataSourceImpl(gh<_i237.Health>()),
     );
+    gh.lazySingleton<_i653.HealthLocalDataSource>(
+      () => _i653.HealthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
+    );
     gh.lazySingleton<_i903.HealthRepository>(
-      () => _i407.HealthRepositoryImpl(gh<_i319.HealthDeviceDataSource>()),
+      () => _i407.HealthRepositoryImpl(
+        gh<_i319.HealthDeviceDataSource>(),
+        gh<_i653.HealthLocalDataSource>(),
+      ),
     );
     gh.factory<_i1012.DashboardCubit>(
       () => _i1012.DashboardCubit(gh<_i903.HealthRepository>()),

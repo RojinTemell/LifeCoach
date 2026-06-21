@@ -19,6 +19,7 @@ dependencies:
   health: ^13.3.1
   injectable: ^3.0.0
   json_annotation: ^4.12.0
+  shared_preferences: ^2.5.5
 
 #Bunlar sadece kod üretirken çalışır, uygulamanın içine paketlenmez → app boyutunu şişirmez.
 dev_dependencies:
