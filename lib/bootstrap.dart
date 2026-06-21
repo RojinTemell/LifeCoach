@@ -18,7 +18,7 @@ Future<void> bootstrap(Widget Function() builder) async {
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      configureDependencies();
+      await configureDependencies();
       runApp(builder());
     },
     (error, stack) {

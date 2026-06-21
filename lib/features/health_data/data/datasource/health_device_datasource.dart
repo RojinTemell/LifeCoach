@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 
 abstract interface class HealthDeviceDataSource {
   Future<bool> requestPermissions();
-  Future<bool> hasPermissions();
+  // Future<bool> hasPermissions();
   Future<int> getTodaySteps();
   Future<double> getTodayDistance();
 }
@@ -29,15 +29,15 @@ class HealthDeviceDataSourceImpl implements HealthDeviceDataSource {
     return _health.requestAuthorization(_types, permissions: _permissions);
   }
 
-  @override
-  Future<bool> hasPermissions() async {
-    await _health.configure();
-    final granted = await _health.hasPermissions(
-      _types,
-      permissions: _permissions,
-    );
-    return granted ?? false;
-  }
+  // @override
+  // Future<bool> hasPermissions() async {
+  //   await _health.configure();
+  //   final granted = await _health.hasPermissions(
+  //     _types,
+  //     permissions: _permissions,
+  //   );
+  //   return granted ?? false;
+  // }
 
   @override
   Future<int> getTodaySteps() async {
