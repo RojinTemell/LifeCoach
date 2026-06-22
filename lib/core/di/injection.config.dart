@@ -24,6 +24,8 @@ import 'package:life_coach/features/health_data/data/repositories/health_reposit
     as _i407;
 import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart'
     as _i903;
+import 'package:life_coach/features/recommendations/domain/services/user_context_builder.dart'
+    as _i933;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -54,6 +56,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1012.DashboardCubit>(
       () => _i1012.DashboardCubit(gh<_i903.HealthRepository>()),
+    );
+    gh.factory<_i933.UserContextBuilder>(
+      () => _i933.UserContextBuilder(gh<_i903.HealthRepository>()),
     );
     return this;
   }
