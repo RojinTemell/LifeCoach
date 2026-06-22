@@ -13,6 +13,6 @@ void main() {
 
     final restored = UserContext.fromJson(context.toJson());
 
-    expect(restored, context); // freezed == sayesinde eşit
+    expect(restored, context);
   });
 }
