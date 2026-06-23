@@ -4,4 +4,5 @@ enum UserGoal {
   breakRhythm,
   reduceScreenTime,
   focus,
+  hydration,
 }
