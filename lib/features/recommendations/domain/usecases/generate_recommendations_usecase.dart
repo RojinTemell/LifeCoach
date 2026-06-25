@@ -1,10 +1,12 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:injectable/injectable.dart';
 import 'package:life_coach/core/error/failures.dart';
 import 'package:life_coach/features/recommendations/domain/engine/recommendation_engine.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_goal.dart';
 import 'package:life_coach/features/recommendations/domain/services/user_context_builder.dart';
 
+@lazySingleton
 class GenerateRecommendationsUseCase {
   GenerateRecommendationsUseCase(this._contextBuilder, this._engine);
 

@@ -1,9 +1,11 @@
+import 'package:injectable/injectable.dart';
 import 'package:life_coach/features/recommendations/domain/engine/rule.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation_type.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_context.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_goal.dart';
 
+@lazySingleton
 class SleepPrepRule implements Rule {
   static const _eveningHour = 22;
   static const _earlyEveningHour = 21;

@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:life_coach/features/recommendations/domain/engine/rule.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation_type.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_context.dart';
 
+@lazySingleton
 class BreakStretchRule implements Rule {
   static const _workStartHour = 9;
   static const _workEndHour = 18;

@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:life_coach/features/recommendations/domain/engine/rule.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation_type.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_context.dart';
 
+@lazySingleton
 class InactivityRule implements Rule {
   static const _activeStartHour = 8;
   static const _activeEndHour = 22;

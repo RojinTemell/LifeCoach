@@ -27,4 +27,5 @@ const _$UserGoalEnumMap = {
   UserGoal.breakRhythm: 'breakRhythm',
   UserGoal.reduceScreenTime: 'reduceScreenTime',
   UserGoal.focus: 'focus',
+  UserGoal.hydration: 'hydration',
 };
