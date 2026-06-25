@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:life_coach/features/recommendations/domain/engine/rule.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation_type.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_context.dart';
 
+@lazySingleton
 class HydrationRule implements Rule {
   static const _wakingStartHour = 8;
   static const _wakingEndHour = 22;

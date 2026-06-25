@@ -24,8 +24,26 @@ import 'package:life_coach/features/health_data/data/repositories/health_reposit
     as _i407;
 import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart'
     as _i903;
+import 'package:life_coach/features/recommendations/di/recommendation_module.dart'
+    as _i684;
+import 'package:life_coach/features/recommendations/domain/engine/recommendation_engine.dart'
+    as _i106;
+import 'package:life_coach/features/recommendations/domain/engine/rule.dart'
+    as _i956;
+import 'package:life_coach/features/recommendations/domain/rules/break_strecth_rule.dart'
+    as _i770;
+import 'package:life_coach/features/recommendations/domain/rules/hydration_rule.dart'
+    as _i200;
+import 'package:life_coach/features/recommendations/domain/rules/inactivity_rule.dart'
+    as _i606;
+import 'package:life_coach/features/recommendations/domain/rules/sleep_prep_rule.dart'
+    as _i350;
 import 'package:life_coach/features/recommendations/domain/services/user_context_builder.dart'
     as _i933;
+import 'package:life_coach/features/recommendations/domain/usecases/generate_recommendations_usecase.dart'
+    as _i890;
+import 'package:life_coach/features/recommendations/presentation/cubit/recommendations_cubit.dart'
+    as _i452;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -36,17 +54,33 @@ extension GetItInjectableX on _i174.GetIt {
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModel = _$RegisterModel();
+    final recommendationModule = _$RecommendationModule();
     gh.factory<_i237.Health>(() => registerModel.health);
     await gh.factoryAsync<_i460.SharedPreferences>(
       () => registerModel.prefs,
       preResolve: true,
     );
     gh.lazySingleton<_i842.AppInfoServices>(() => _i842.AppInfoServices());
+    gh.lazySingleton<_i770.BreakStretchRule>(() => _i770.BreakStretchRule());
+    gh.lazySingleton<_i200.HydrationRule>(() => _i200.HydrationRule());
+    gh.lazySingleton<_i606.InactivityRule>(() => _i606.InactivityRule());
+    gh.lazySingleton<_i350.SleepPrepRule>(() => _i350.SleepPrepRule());
     gh.lazySingleton<_i319.HealthDeviceDataSource>(
       () => _i319.HealthDeviceDataSourceImpl(gh<_i237.Health>()),
     );
     gh.lazySingleton<_i653.HealthLocalDataSource>(
       () => _i653.HealthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<List<_i956.Rule>>(
+      () => recommendationModule.rules(
+        gh<_i606.InactivityRule>(),
+        gh<_i200.HydrationRule>(),
+        gh<_i770.BreakStretchRule>(),
+        gh<_i350.SleepPrepRule>(),
+      ),
+    );
+    gh.lazySingleton<_i106.RecommendationEngine>(
+      () => recommendationModule.engine(gh<List<_i956.Rule>>()),
     );
     gh.lazySingleton<_i903.HealthRepository>(
       () => _i407.HealthRepositoryImpl(
@@ -60,8 +94,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i933.UserContextBuilder>(
       () => _i933.UserContextBuilder(gh<_i903.HealthRepository>()),
     );
+    gh.lazySingleton<_i890.GenerateRecommendationsUseCase>(
+      () => _i890.GenerateRecommendationsUseCase(
+        gh<_i933.UserContextBuilder>(),
+        gh<_i106.RecommendationEngine>(),
+      ),
+    );
+    gh.factory<_i452.RecommendationsCubit>(
+      () => _i452.RecommendationsCubit(
+        gh<_i890.GenerateRecommendationsUseCase>(),
+      ),
+    );
     return this;
   }
 }
 
 class _$RegisterModel extends _i847.RegisterModel {}
+
+class _$RecommendationModule extends _i684.RecommendationModule {}
