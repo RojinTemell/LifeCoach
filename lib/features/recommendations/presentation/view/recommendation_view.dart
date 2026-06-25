@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:life_coach/core/di/injection.dart';
 import 'package:life_coach/features/recommendations/domain/engine/rule_based_engine.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_goal.dart';
+import 'package:life_coach/features/recommendations/domain/rules/break_strecth_rule.dart';
 import 'package:life_coach/features/recommendations/domain/rules/hydration_rule.dart';
 import 'package:life_coach/features/recommendations/domain/rules/inactivity_rule.dart';
+import 'package:life_coach/features/recommendations/domain/rules/sleep_prep_rule.dart';
 import 'package:life_coach/features/recommendations/domain/services/user_context_builder.dart';
 import 'package:life_coach/features/recommendations/domain/usecases/generate_recommendations_usecase.dart';
 import 'package:life_coach/features/recommendations/presentation/cubit/recommendations_cubit.dart';
@@ -22,7 +24,12 @@ class RecommendationView extends StatelessWidget {
         final cubit = RecommendationsCubit(
           GenerateRecommendationsUseCase(
             getIt<UserContextBuilder>(),
-            RuleBasedEngine([InactivityRule(), HydrationRule()]),
+            RuleBasedEngine([
+              InactivityRule(),
+              HydrationRule(),
+              BreakStretchRule(), // yeni
+              SleepPrepRule(), // yeni
+            ]),
           ),
         );
         unawaited(cubit.load(goal: UserGoal.moreMovement));
