@@ -15,6 +15,13 @@ class HealthDeviceDataSourceImpl implements HealthDeviceDataSource {
   HealthDeviceDataSourceImpl(this._health);
   final Health _health;
 
+  Future<bool>? _readyFuture;
+  Future<bool> _ensureReady() => _readyFuture ??= _initialize();
+  Future<bool> _initialize() async {
+    await _health.configure();
+    return _health.requestAuthorization(_types, permissions: _permissions);
+  }
+
   HealthDataType get _distanceType => Platform.isAndroid
       ? HealthDataType.DISTANCE_DELTA
       : HealthDataType.DISTANCE_WALKING_RUNNING;
@@ -24,13 +31,11 @@ class HealthDeviceDataSourceImpl implements HealthDeviceDataSource {
       _types.map((_) => HealthDataAccess.READ).toList();
 
   @override
-  Future<bool> requestPermissions() async {
-    await _health.configure();
-    return _health.requestAuthorization(_types, permissions: _permissions);
-  }
+  Future<bool> requestPermissions() => _ensureReady();
 
   @override
   Future<int> getTodaySteps() async {
+    await _ensureReady();
     final now = DateTime.now();
     final midnight = DateTime(now.year, now.month, now.day);
     final steps = await _health.getTotalStepsInInterval(midnight, now);
@@ -39,6 +44,7 @@ class HealthDeviceDataSourceImpl implements HealthDeviceDataSource {
 
   @override
   Future<double> getTodayDistance() async {
+    await _ensureReady();
     final now = DateTime.now();
     final midnight = DateTime(now.year, now.month, now.day);
     final points = await _health.getHealthDataFromTypes(
