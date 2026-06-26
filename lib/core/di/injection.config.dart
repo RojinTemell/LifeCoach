@@ -12,8 +12,7 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:health/health.dart' as _i237;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:life_coach/core/di/register_model.dart' as _i847;
-import 'package:life_coach/core/services/app_info_services.dart' as _i842;
+import 'package:life_coach/core/di/register_module.dart' as _i27;
 import 'package:life_coach/features/dashboard/presentation/cubit/dashboard_cubit.dart'
     as _i1012;
 import 'package:life_coach/features/health_data/data/datasource/health_device_datasource.dart'
@@ -60,7 +59,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModel.prefs,
       preResolve: true,
     );
-    gh.lazySingleton<_i842.AppInfoServices>(() => _i842.AppInfoServices());
     gh.lazySingleton<_i770.BreakStretchRule>(() => _i770.BreakStretchRule());
     gh.lazySingleton<_i200.HydrationRule>(() => _i200.HydrationRule());
     gh.lazySingleton<_i606.InactivityRule>(() => _i606.InactivityRule());
@@ -109,6 +107,6 @@ extension GetItInjectableX on _i174.GetIt {
   }
 }
 
-class _$RegisterModel extends _i847.RegisterModel {}
+class _$RegisterModel extends _i27.RegisterModel {}
 
 class _$RecommendationModule extends _i684.RecommendationModule {}
