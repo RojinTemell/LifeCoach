@@ -108,6 +108,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i452.RecommendationsCubit>(
       () => _i452.RecommendationsCubit(
         gh<_i890.GenerateRecommendationsUseCase>(),
+        gh<_i998.NotificationService>(),
       ),
     );
     return this;

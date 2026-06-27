@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:life_coach/app/router/app_router.dart';
 import 'package:life_coach/core/di/injection.dart';
 import 'package:life_coach/core/services/notifications/notification_service.dart';
 
@@ -20,7 +21,13 @@ Future<void> bootstrap(Widget Function() builder) async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       await configureDependencies();
-      await getIt<NotificationService>().init();
+      final notifications = getIt<NotificationService>();
+      await notifications.init(
+        onNotificationTap: (payload) {
+          if (payload != null) appRouter.go(payload); // ← DEEP LINK
+        },
+      );
+      await notifications.requestPermission();
       runApp(builder());
     },
     (error, stack) {

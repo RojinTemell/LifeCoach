@@ -21,7 +21,7 @@ class NotificationServiceImpl implements NotificationService {
   );
 
   @override
-  Future<void> init() async {
+  Future<void> init({void Function(String? payload)? onNotificationTap}) async {
     tzdata.initializeTimeZones();
     final timeZone = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(timeZone.identifier));
@@ -34,6 +34,8 @@ class NotificationServiceImpl implements NotificationService {
     );
     await _plugin.initialize(
       settings: const InitializationSettings(android: android, iOS: ios),
+      onDidReceiveNotificationResponse: (response) =>
+          onNotificationTap?.call(response.payload),
     );
   }
 
@@ -64,6 +66,7 @@ class NotificationServiceImpl implements NotificationService {
     required String title,
     required String body,
     required DateTime scheduledAt,
+    String? payload,
   }) {
     return _plugin.zonedSchedule(
       id: id,
@@ -72,6 +75,7 @@ class NotificationServiceImpl implements NotificationService {
       scheduledDate: tz.TZDateTime.from(scheduledAt, tz.local),
       notificationDetails: _details,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      payload: payload,
     );
   }
 
@@ -80,12 +84,14 @@ class NotificationServiceImpl implements NotificationService {
     required int id,
     required String title,
     required String body,
+    String? payload,
   }) {
     return _plugin.show(
       id: id,
       title: title,
       body: body,
       notificationDetails: _details,
+      payload: payload,
     );
   }
 

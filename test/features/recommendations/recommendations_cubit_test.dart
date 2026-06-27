@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:life_coach/core/error/failures.dart';
+import 'package:life_coach/core/services/notifications/notification_service.dart';
 import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart';
 import 'package:life_coach/features/recommendations/domain/engine/recommendation_engine.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation.dart';
@@ -11,6 +12,32 @@ import 'package:life_coach/features/recommendations/domain/services/user_context
 import 'package:life_coach/features/recommendations/domain/usecases/generate_recommendations_usecase.dart';
 import 'package:life_coach/features/recommendations/presentation/cubit/recommendations_cubit.dart';
 import 'package:life_coach/features/recommendations/presentation/cubit/recommendations_state.dart';
+
+class _FakeNotificationService implements NotificationService {
+  @override
+  Future<void> init({void Function(String?)? onNotificationTap}) async {}
+  @override
+  Future<bool> requestPermission() async => true;
+  @override
+  Future<void> show({
+    required int id,
+    required String title,
+    required String body,
+    String? payload,
+  }) async {}
+  @override
+  Future<void> schedule({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime scheduledAt,
+    String? payload,
+  }) async {}
+  @override
+  Future<void> cancel(int id) async {}
+  @override
+  Future<void> cancelAll() async {}
+}
 
 class _FakeHealthRepo implements HealthRepository {
   _FakeHealthRepo({this.fail = false});
@@ -51,13 +78,17 @@ void main() {
           ),
         ],
       ),
+      _FakeNotificationService(),
     );
     await cubit.load(goal: UserGoal.moreMovement);
     expect(cubit.state.status, RecommendationsStatus.success);
     expect(cubit.state.recommendations.length, 1);
   });
   test('load: health başarısızsa failure', () async {
-    final cubit = RecommendationsCubit(_useCase(fail: true));
+    final cubit = RecommendationsCubit(
+      _useCase(fail: true),
+      _FakeNotificationService(),
+    );
 
     await cubit.load(goal: UserGoal.moreMovement);
 
