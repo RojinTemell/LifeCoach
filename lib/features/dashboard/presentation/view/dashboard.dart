@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:life_coach/app/router/app_routes.dart';
 import 'package:life_coach/core/di/injection.dart';
-import 'package:life_coach/core/services/notifications/notification_setup.dart';
+import 'package:life_coach/core/services/notifications/notification_service.dart';
 import 'package:life_coach/features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:life_coach/features/recommendations/presentation/view/recommendation_view.dart';
 
@@ -28,8 +28,13 @@ class Dashboard extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.notifications),
               onPressed: () async {
-                await requestNotificationPermission();
-                await showTestNotification();
+                final notifications = getIt<NotificationService>();
+                await notifications.requestPermission();
+                await notifications.show(
+                  id: 0,
+                  title: 'Merhaba! 👋',
+                  body: 'Bildirimler çalışıyor 🎉',
+                );
               },
             ),
             IconButton(

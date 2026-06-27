@@ -13,6 +13,10 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:health/health.dart' as _i237;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:life_coach/core/di/register_module.dart' as _i27;
+import 'package:life_coach/core/services/notifications/notification_service.dart'
+    as _i998;
+import 'package:life_coach/core/services/notifications/notification_service_impl.dart'
+    as _i52;
 import 'package:life_coach/features/dashboard/presentation/cubit/dashboard_cubit.dart'
     as _i1012;
 import 'package:life_coach/features/health_data/data/datasource/health_device_datasource.dart'
@@ -65,6 +69,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i350.SleepPrepRule>(() => _i350.SleepPrepRule());
     gh.lazySingleton<_i319.HealthDeviceDataSource>(
       () => _i319.HealthDeviceDataSourceImpl(gh<_i237.Health>()),
+    );
+    gh.lazySingleton<_i998.NotificationService>(
+      () => _i52.NotificationServiceImpl(),
     );
     gh.lazySingleton<_i653.HealthLocalDataSource>(
       () => _i653.HealthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
