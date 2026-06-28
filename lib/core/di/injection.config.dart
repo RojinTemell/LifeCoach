@@ -27,8 +27,12 @@ import 'package:life_coach/features/health_data/data/repositories/health_reposit
     as _i407;
 import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart'
     as _i903;
+import 'package:life_coach/features/notifications/data/repositiories/notification_log_impl.dart'
+    as _i957;
 import 'package:life_coach/features/notifications/data/repositiories/quiet_hours_repository_impl.dart'
     as _i835;
+import 'package:life_coach/features/notifications/domain/repositories/notification_log.dart'
+    as _i1055;
 import 'package:life_coach/features/notifications/domain/repositories/quiet_hours_repository.dart'
     as _i908;
 import 'package:life_coach/features/notifications/domain/services/recommendation_notifier.dart'
@@ -81,17 +85,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i998.NotificationService>(
       () => _i52.NotificationServiceImpl(),
     );
+    gh.lazySingleton<_i1055.NotificationLog>(
+      () => _i957.NotificationLogImpl(gh<_i460.SharedPreferences>()),
+    );
     gh.lazySingleton<_i908.QuietHoursRepository>(
       () => _i835.QuietHoursRepositoryImpl(gh<_i460.SharedPreferences>()),
     );
     gh.lazySingleton<_i653.HealthLocalDataSource>(
       () => _i653.HealthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
-    );
-    gh.lazySingleton<_i172.RecommendationNotifier>(
-      () => _i333.RecommendationNotifierImpl(
-        gh<_i998.NotificationService>(),
-        gh<_i908.QuietHoursRepository>(),
-      ),
     );
     gh.lazySingleton<List<_i956.Rule>>(
       () => recommendationModule.rules(
@@ -99,6 +100,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i200.HydrationRule>(),
         gh<_i770.BreakStretchRule>(),
         gh<_i350.SleepPrepRule>(),
+      ),
+    );
+    gh.lazySingleton<_i172.RecommendationNotifier>(
+      () => _i333.RecommendationNotifierImpl(
+        gh<_i998.NotificationService>(),
+        gh<_i908.QuietHoursRepository>(),
+        gh<_i1055.NotificationLog>(),
       ),
     );
     gh.lazySingleton<_i106.RecommendationEngine>(
