@@ -27,6 +27,14 @@ import 'package:life_coach/features/health_data/data/repositories/health_reposit
     as _i407;
 import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart'
     as _i903;
+import 'package:life_coach/features/notifications/data/repositiories/quiet_hours_repository_impl.dart'
+    as _i835;
+import 'package:life_coach/features/notifications/domain/repositories/quiet_hours_repository.dart'
+    as _i908;
+import 'package:life_coach/features/notifications/domain/services/recommendation_notifier.dart'
+    as _i172;
+import 'package:life_coach/features/notifications/domain/services/recommendation_notifier_impl.dart'
+    as _i333;
 import 'package:life_coach/features/recommendations/di/recommendation_module.dart'
     as _i684;
 import 'package:life_coach/features/recommendations/domain/engine/recommendation_engine.dart'
@@ -73,8 +81,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i998.NotificationService>(
       () => _i52.NotificationServiceImpl(),
     );
+    gh.lazySingleton<_i908.QuietHoursRepository>(
+      () => _i835.QuietHoursRepositoryImpl(gh<_i460.SharedPreferences>()),
+    );
     gh.lazySingleton<_i653.HealthLocalDataSource>(
       () => _i653.HealthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i172.RecommendationNotifier>(
+      () => _i333.RecommendationNotifierImpl(
+        gh<_i998.NotificationService>(),
+        gh<_i908.QuietHoursRepository>(),
+      ),
     );
     gh.lazySingleton<List<_i956.Rule>>(
       () => recommendationModule.rules(
@@ -108,7 +125,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i452.RecommendationsCubit>(
       () => _i452.RecommendationsCubit(
         gh<_i890.GenerateRecommendationsUseCase>(),
-        gh<_i998.NotificationService>(),
+        gh<_i172.RecommendationNotifier>(),
       ),
     );
     return this;
