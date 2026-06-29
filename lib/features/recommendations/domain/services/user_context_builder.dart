@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:life_coach/core/error/failures.dart';
 import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart';
+import 'package:life_coach/features/onboarding/domain/entities/user_profile.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_context.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_goal.dart';
 
@@ -13,6 +14,7 @@ class UserContextBuilder {
   Future<Either<Failure, UserContext>> build({
     required UserGoal goal,
     DateTime? date,
+    UserProfile? profile,
   }) async {
     final stepsResult = await _healthRepository.getTodaySteps();
     final distanceResult = await _healthRepository.getTodayDistance();
@@ -24,6 +26,7 @@ class UserContextBuilder {
           steps: steps,
           distanceMeters: distance,
           goal: goal,
+          profile: profile,
         ),
       ),
     );

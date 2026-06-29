@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:life_coach/app/router/app_router.dart';
 import 'package:life_coach/app/router/app_routes.dart';
 import 'package:life_coach/core/di/injection.dart';
 import 'package:life_coach/features/onboarding/domain/repositories/user_preferences_repository.dart';
@@ -69,9 +68,8 @@ class _GoalCard extends StatelessWidget {
         trailing: const Icon(Icons.chevron_right),
         onTap: () async {
           await getIt<UserPreferencesRepository>().setGoal(goal);
-          OnboardingGate.isComplete = true;
           if (!context.mounted) return;
-          context.go(AppRoutes.dashboard);
+          context.go(AppRoutes.onboardingProfile);
         },
       ),
     );

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserContext {
 
- DateTime get timestamp; int get steps; double get distanceMeters; UserGoal get goal;
+ DateTime get timestamp; int get steps; double get distanceMeters; UserGoal get goal; UserProfile? get profile;
 /// Create a copy of UserContext
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserContextCopyWith<UserContext> get copyWith => _$UserContextCopyWithImpl<User
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserContext&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.steps, steps) || other.steps == steps)&&(identical(other.distanceMeters, distanceMeters) || other.distanceMeters == distanceMeters)&&(identical(other.goal, goal) || other.goal == goal));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserContext&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.steps, steps) || other.steps == steps)&&(identical(other.distanceMeters, distanceMeters) || other.distanceMeters == distanceMeters)&&(identical(other.goal, goal) || other.goal == goal)&&(identical(other.profile, profile) || other.profile == profile));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,timestamp,steps,distanceMeters,goal);
+int get hashCode => Object.hash(runtimeType,timestamp,steps,distanceMeters,goal,profile);
 
 @override
 String toString() {
-  return 'UserContext(timestamp: $timestamp, steps: $steps, distanceMeters: $distanceMeters, goal: $goal)';
+  return 'UserContext(timestamp: $timestamp, steps: $steps, distanceMeters: $distanceMeters, goal: $goal, profile: $profile)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $UserContextCopyWith<$Res>  {
   factory $UserContextCopyWith(UserContext value, $Res Function(UserContext) _then) = _$UserContextCopyWithImpl;
 @useResult
 $Res call({
- DateTime timestamp, int steps, double distanceMeters, UserGoal goal
+ DateTime timestamp, int steps, double distanceMeters, UserGoal goal, UserProfile? profile
 });
 
 
-
+$UserProfileCopyWith<$Res>? get profile;
 
 }
 /// @nodoc
@@ -65,16 +65,29 @@ class _$UserContextCopyWithImpl<$Res>
 
 /// Create a copy of UserContext
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? timestamp = null,Object? steps = null,Object? distanceMeters = null,Object? goal = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? timestamp = null,Object? steps = null,Object? distanceMeters = null,Object? goal = null,Object? profile = freezed,}) {
   return _then(_self.copyWith(
 timestamp: null == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
 as DateTime,steps: null == steps ? _self.steps : steps // ignore: cast_nullable_to_non_nullable
 as int,distanceMeters: null == distanceMeters ? _self.distanceMeters : distanceMeters // ignore: cast_nullable_to_non_nullable
 as double,goal: null == goal ? _self.goal : goal // ignore: cast_nullable_to_non_nullable
-as UserGoal,
+as UserGoal,profile: freezed == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
+as UserProfile?,
   ));
 }
+/// Create a copy of UserContext
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserProfileCopyWith<$Res>? get profile {
+    if (_self.profile == null) {
+    return null;
+  }
 
+  return $UserProfileCopyWith<$Res>(_self.profile!, (value) {
+    return _then(_self.copyWith(profile: value));
+  });
+}
 }
 
 
@@ -156,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime timestamp,  int steps,  double distanceMeters,  UserGoal goal)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime timestamp,  int steps,  double distanceMeters,  UserGoal goal,  UserProfile? profile)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserContext() when $default != null:
-return $default(_that.timestamp,_that.steps,_that.distanceMeters,_that.goal);case _:
+return $default(_that.timestamp,_that.steps,_that.distanceMeters,_that.goal,_that.profile);case _:
   return orElse();
 
 }
@@ -177,10 +190,10 @@ return $default(_that.timestamp,_that.steps,_that.distanceMeters,_that.goal);cas
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime timestamp,  int steps,  double distanceMeters,  UserGoal goal)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime timestamp,  int steps,  double distanceMeters,  UserGoal goal,  UserProfile? profile)  $default,) {final _that = this;
 switch (_that) {
 case _UserContext():
-return $default(_that.timestamp,_that.steps,_that.distanceMeters,_that.goal);case _:
+return $default(_that.timestamp,_that.steps,_that.distanceMeters,_that.goal,_that.profile);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +210,10 @@ return $default(_that.timestamp,_that.steps,_that.distanceMeters,_that.goal);cas
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime timestamp,  int steps,  double distanceMeters,  UserGoal goal)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime timestamp,  int steps,  double distanceMeters,  UserGoal goal,  UserProfile? profile)?  $default,) {final _that = this;
 switch (_that) {
 case _UserContext() when $default != null:
-return $default(_that.timestamp,_that.steps,_that.distanceMeters,_that.goal);case _:
+return $default(_that.timestamp,_that.steps,_that.distanceMeters,_that.goal,_that.profile);case _:
   return null;
 
 }
@@ -212,13 +225,14 @@ return $default(_that.timestamp,_that.steps,_that.distanceMeters,_that.goal);cas
 @JsonSerializable()
 
 class _UserContext implements UserContext {
-  const _UserContext({required this.timestamp, required this.steps, required this.distanceMeters, required this.goal});
+  const _UserContext({required this.timestamp, required this.steps, required this.distanceMeters, required this.goal, this.profile});
   factory _UserContext.fromJson(Map<String, dynamic> json) => _$UserContextFromJson(json);
 
 @override final  DateTime timestamp;
 @override final  int steps;
 @override final  double distanceMeters;
 @override final  UserGoal goal;
+@override final  UserProfile? profile;
 
 /// Create a copy of UserContext
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserContext&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.steps, steps) || other.steps == steps)&&(identical(other.distanceMeters, distanceMeters) || other.distanceMeters == distanceMeters)&&(identical(other.goal, goal) || other.goal == goal));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserContext&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.steps, steps) || other.steps == steps)&&(identical(other.distanceMeters, distanceMeters) || other.distanceMeters == distanceMeters)&&(identical(other.goal, goal) || other.goal == goal)&&(identical(other.profile, profile) || other.profile == profile));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,timestamp,steps,distanceMeters,goal);
+int get hashCode => Object.hash(runtimeType,timestamp,steps,distanceMeters,goal,profile);
 
 @override
 String toString() {
-  return 'UserContext(timestamp: $timestamp, steps: $steps, distanceMeters: $distanceMeters, goal: $goal)';
+  return 'UserContext(timestamp: $timestamp, steps: $steps, distanceMeters: $distanceMeters, goal: $goal, profile: $profile)';
 }
 
 
@@ -253,11 +267,11 @@ abstract mixin class _$UserContextCopyWith<$Res> implements $UserContextCopyWith
   factory _$UserContextCopyWith(_UserContext value, $Res Function(_UserContext) _then) = __$UserContextCopyWithImpl;
 @override @useResult
 $Res call({
- DateTime timestamp, int steps, double distanceMeters, UserGoal goal
+ DateTime timestamp, int steps, double distanceMeters, UserGoal goal, UserProfile? profile
 });
 
 
-
+@override $UserProfileCopyWith<$Res>? get profile;
 
 }
 /// @nodoc
@@ -270,17 +284,30 @@ class __$UserContextCopyWithImpl<$Res>
 
 /// Create a copy of UserContext
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? timestamp = null,Object? steps = null,Object? distanceMeters = null,Object? goal = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? timestamp = null,Object? steps = null,Object? distanceMeters = null,Object? goal = null,Object? profile = freezed,}) {
   return _then(_UserContext(
 timestamp: null == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
 as DateTime,steps: null == steps ? _self.steps : steps // ignore: cast_nullable_to_non_nullable
 as int,distanceMeters: null == distanceMeters ? _self.distanceMeters : distanceMeters // ignore: cast_nullable_to_non_nullable
 as double,goal: null == goal ? _self.goal : goal // ignore: cast_nullable_to_non_nullable
-as UserGoal,
+as UserGoal,profile: freezed == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
+as UserProfile?,
   ));
 }
 
+/// Create a copy of UserContext
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserProfileCopyWith<$Res>? get profile {
+    if (_self.profile == null) {
+    return null;
+  }
 
+  return $UserProfileCopyWith<$Res>(_self.profile!, (value) {
+    return _then(_self.copyWith(profile: value));
+  });
+}
 }
 
 // dart format on

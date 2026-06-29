@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:life_coach/core/error/failures.dart';
 import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart';
 import 'package:life_coach/features/notifications/domain/services/recommendation_notifier.dart';
+import 'package:life_coach/features/onboarding/domain/entities/user_profile.dart';
 import 'package:life_coach/features/onboarding/domain/repositories/user_preferences_repository.dart';
 import 'package:life_coach/features/recommendations/domain/engine/recommendation_engine.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation.dart';
@@ -24,6 +25,11 @@ class _FakePrefs implements UserPreferencesRepository {
   Future<UserGoal?> getGoal() async => UserGoal.moreMovement;
   @override
   Future<void> setGoal(UserGoal goal) async {}
+  @override
+  Future<UserProfile?> getProfile() async => null;
+
+  @override
+  Future<void> setProfile(UserProfile profile) async {}
 }
 
 class _FakeHealthRepo implements HealthRepository {
