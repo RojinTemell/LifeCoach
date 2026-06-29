@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:life_coach/app/router/app_router.dart';
 import 'package:life_coach/core/di/injection.dart';
 import 'package:life_coach/core/services/notifications/notification_service.dart';
+import 'package:life_coach/features/onboarding/domain/repositories/user_preferences_repository.dart';
 
 Future<void> bootstrap(Widget Function() builder) async {
   // 1) Flutter framework içi hatalar (build/layout/paint)
@@ -28,6 +29,8 @@ Future<void> bootstrap(Widget Function() builder) async {
         },
       );
       await notifications.requestPermission();
+      OnboardingGate.isComplete =
+          (await getIt<UserPreferencesRepository>().getGoal()) != null;
       runApp(builder());
     },
     (error, stack) {

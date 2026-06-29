@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:life_coach/core/error/failures.dart';
 import 'package:life_coach/features/health_data/domain/repositories/health_repository.dart';
 import 'package:life_coach/features/notifications/domain/services/recommendation_notifier.dart';
+import 'package:life_coach/features/onboarding/domain/repositories/user_preferences_repository.dart';
 import 'package:life_coach/features/recommendations/domain/engine/recommendation_engine.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation_type.dart';
@@ -16,6 +17,13 @@ import 'package:life_coach/features/recommendations/presentation/cubit/recommend
 class _FakeNotifier implements RecommendationNotifier {
   @override
   Future<void> notify(List<Recommendation> recommendations) async {}
+}
+
+class _FakePrefs implements UserPreferencesRepository {
+  @override
+  Future<UserGoal?> getGoal() async => UserGoal.moreMovement;
+  @override
+  Future<void> setGoal(UserGoal goal) async {}
 }
 
 class _FakeHealthRepo implements HealthRepository {
@@ -58,8 +66,9 @@ void main() {
         ],
       ),
       _FakeNotifier(),
+      _FakePrefs(),
     );
-    await cubit.load(goal: UserGoal.moreMovement);
+    await cubit.load();
     expect(cubit.state.status, RecommendationsStatus.success);
     expect(cubit.state.recommendations.length, 1);
   });
@@ -67,9 +76,10 @@ void main() {
     final cubit = RecommendationsCubit(
       _useCase(fail: true),
       _FakeNotifier(),
+      _FakePrefs(),
     );
 
-    await cubit.load(goal: UserGoal.moreMovement);
+    await cubit.load();
 
     expect(cubit.state.status, RecommendationsStatus.failure);
   });

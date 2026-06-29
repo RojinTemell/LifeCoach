@@ -39,6 +39,10 @@ import 'package:life_coach/features/notifications/domain/services/recommendation
     as _i172;
 import 'package:life_coach/features/notifications/domain/services/recommendation_notifier_impl.dart'
     as _i333;
+import 'package:life_coach/features/onboarding/data/repositories/user_preferences_repository_impl.dart'
+    as _i36;
+import 'package:life_coach/features/onboarding/domain/repositories/user_preferences_repository.dart'
+    as _i780;
 import 'package:life_coach/features/recommendations/di/recommendation_module.dart'
     as _i684;
 import 'package:life_coach/features/recommendations/domain/engine/recommendation_engine.dart'
@@ -84,6 +88,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i998.NotificationService>(
       () => _i52.NotificationServiceImpl(),
+    );
+    gh.lazySingleton<_i780.UserPreferencesRepository>(
+      () => _i36.UserPreferencesRepositoryImpl(gh<_i460.SharedPreferences>()),
     );
     gh.lazySingleton<_i1055.NotificationLog>(
       () => _i957.NotificationLogImpl(gh<_i460.SharedPreferences>()),
@@ -134,6 +141,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i452.RecommendationsCubit(
         gh<_i890.GenerateRecommendationsUseCase>(),
         gh<_i172.RecommendationNotifier>(),
+        gh<_i780.UserPreferencesRepository>(),
       ),
     );
     return this;
