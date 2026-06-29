@@ -22,7 +22,11 @@ class RecommendationsCubit extends Cubit<RecommendationsState> {
   Future<void> load() async {
     emit(state.copyWith(status: RecommendationsStatus.loading));
     final goal = await _prefs.getGoal() ?? UserGoal.moreMovement;
-    final result = await _generateRecommendations.call(goal: goal);
+    final profile = await _prefs.getProfile();
+    final result = await _generateRecommendations.call(
+      goal: goal,
+      profile: profile,
+    );
     result.fold(
       (failure) => emit(
         state.copyWith(

@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:life_coach/app/router/app_routes.dart';
 import 'package:life_coach/features/dashboard/presentation/view/dashboard.dart';
 import 'package:life_coach/features/onboarding/presentation/view/onboarding.dart';
+import 'package:life_coach/features/onboarding/presentation/view/profile.dart';
 import 'package:life_coach/features/settings/presentation/view/settings.dart';
 
 class OnboardingGate {
@@ -11,7 +12,7 @@ class OnboardingGate {
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.dashboard,
   redirect: (context, state) {
-    final atOnboarding = state.matchedLocation == AppRoutes.onboarding;
+    final atOnboarding = state.matchedLocation.startsWith(AppRoutes.onboarding);
     if (!OnboardingGate.isComplete && !atOnboarding) {
       return AppRoutes.onboarding;
     }
@@ -22,6 +23,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.onboarding,
       builder: (context, state) => const Onboarding(),
+    ),
+    GoRoute(
+      path: AppRoutes.onboardingProfile,
+      builder: (c, s) => const Profile(),
     ),
     GoRoute(
       path: AppRoutes.dashboard,

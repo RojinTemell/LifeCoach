@@ -11,6 +11,9 @@ _UserContext _$UserContextFromJson(Map<String, dynamic> json) => _UserContext(
   steps: (json['steps'] as num).toInt(),
   distanceMeters: (json['distanceMeters'] as num).toDouble(),
   goal: $enumDecode(_$UserGoalEnumMap, json['goal']),
+  profile: json['profile'] == null
+      ? null
+      : UserProfile.fromJson(json['profile'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$UserContextToJson(_UserContext instance) =>
@@ -19,6 +22,7 @@ Map<String, dynamic> _$UserContextToJson(_UserContext instance) =>
       'steps': instance.steps,
       'distanceMeters': instance.distanceMeters,
       'goal': _$UserGoalEnumMap[instance.goal]!,
+      'profile': instance.profile,
     };
 
 const _$UserGoalEnumMap = {

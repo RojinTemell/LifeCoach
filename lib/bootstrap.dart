@@ -30,7 +30,7 @@ Future<void> bootstrap(Widget Function() builder) async {
       );
       await notifications.requestPermission();
       OnboardingGate.isComplete =
-          (await getIt<UserPreferencesRepository>().getGoal()) != null;
+          (await getIt<UserPreferencesRepository>().getProfile()) != null;
       runApp(builder());
     },
     (error, stack) {
