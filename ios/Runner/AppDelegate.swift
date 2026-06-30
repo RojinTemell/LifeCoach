@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import workmanager_apple
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
@@ -10,6 +11,10 @@ import UIKit
     if #available(iOS 10.0, *) {
       UNUserNotificationCenter.current().delegate = self
     }
+    WorkmanagerPlugin.registerPeriodicTask(
+      withIdentifier: "com.rojintemel.lifecoach.recommendationRefresh",
+      frequency: nil
+    )
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 

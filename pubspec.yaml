@@ -23,6 +23,7 @@ dependencies:
   json_annotation: ^4.12.0
   shared_preferences: ^2.5.5
   timezone: ^0.11.0
+  workmanager: ^0.9.0+3
 
 #Bunlar sadece kod üretirken çalışır, uygulamanın içine paketlenmez → app boyutunu şişirmez.
 dev_dependencies:

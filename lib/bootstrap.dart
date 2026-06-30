@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:life_coach/app/router/app_router.dart';
+import 'package:life_coach/core/background/background_tasks.dart';
 import 'package:life_coach/core/di/injection.dart';
 import 'package:life_coach/core/services/notifications/notification_service.dart';
 import 'package:life_coach/features/onboarding/domain/repositories/user_preferences_repository.dart';
+import 'package:workmanager/workmanager.dart';
 
 Future<void> bootstrap(Widget Function() builder) async {
   // 1) Flutter framework içi hatalar (build/layout/paint)
@@ -31,6 +33,14 @@ Future<void> bootstrap(Widget Function() builder) async {
       await notifications.requestPermission();
       OnboardingGate.isComplete =
           (await getIt<UserPreferencesRepository>().getProfile()) != null;
+      await Workmanager().initialize(callbackDispatcher);
+      await Workmanager().registerPeriodicTask(
+        recommendationTask,
+        recommendationTask,
+        frequency: const Duration(
+          hours: 1,
+        ), // Android min 15 dk; iOS OS'a kalmış
+      );
       runApp(builder());
     },
     (error, stack) {
