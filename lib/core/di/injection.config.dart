@@ -43,12 +43,16 @@ import 'package:life_coach/features/onboarding/data/repositories/user_preference
     as _i36;
 import 'package:life_coach/features/onboarding/domain/repositories/user_preferences_repository.dart'
     as _i780;
+import 'package:life_coach/features/recommendations/data/repositories/feedback_repository_impl.dart'
+    as _i703;
 import 'package:life_coach/features/recommendations/di/recommendation_module.dart'
     as _i684;
 import 'package:life_coach/features/recommendations/domain/engine/recommendation_engine.dart'
     as _i106;
 import 'package:life_coach/features/recommendations/domain/engine/rule.dart'
     as _i956;
+import 'package:life_coach/features/recommendations/domain/repositories/feedback_repository.dart'
+    as _i313;
 import 'package:life_coach/features/recommendations/domain/rules/break_strecth_rule.dart'
     as _i770;
 import 'package:life_coach/features/recommendations/domain/rules/hydration_rule.dart'
@@ -61,6 +65,8 @@ import 'package:life_coach/features/recommendations/domain/services/user_context
     as _i933;
 import 'package:life_coach/features/recommendations/domain/usecases/generate_recommendations_usecase.dart'
     as _i890;
+import 'package:life_coach/features/recommendations/domain/usecases/record_feedback_usecase.dart'
+    as _i684;
 import 'package:life_coach/features/recommendations/presentation/cubit/recommendations_cubit.dart'
     as _i452;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -109,6 +115,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i350.SleepPrepRule>(),
       ),
     );
+    gh.lazySingleton<_i313.FeedbackRepository>(
+      () => _i703.FeedbackRepositoryImpl(gh<_i460.SharedPreferences>()),
+    );
     gh.lazySingleton<_i172.RecommendationNotifier>(
       () => _i333.RecommendationNotifierImpl(
         gh<_i998.NotificationService>(),
@@ -118,6 +127,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i106.RecommendationEngine>(
       () => recommendationModule.engine(gh<List<_i956.Rule>>()),
+    );
+    gh.lazySingleton<_i684.RecordFeedbackUseCase>(
+      () => _i684.RecordFeedbackUseCase(gh<_i313.FeedbackRepository>()),
     );
     gh.lazySingleton<_i903.HealthRepository>(
       () => _i407.HealthRepositoryImpl(
@@ -142,6 +154,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i890.GenerateRecommendationsUseCase>(),
         gh<_i172.RecommendationNotifier>(),
         gh<_i780.UserPreferencesRepository>(),
+        gh<_i684.RecordFeedbackUseCase>(),
       ),
     );
     return this;

@@ -6,18 +6,34 @@ import 'package:life_coach/features/notifications/domain/services/recommendation
 import 'package:life_coach/features/onboarding/domain/entities/user_profile.dart';
 import 'package:life_coach/features/onboarding/domain/repositories/user_preferences_repository.dart';
 import 'package:life_coach/features/recommendations/domain/engine/recommendation_engine.dart';
+import 'package:life_coach/features/recommendations/domain/entities/feedback_event.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation.dart';
+import 'package:life_coach/features/recommendations/domain/entities/recommendation_feedback.dart';
 import 'package:life_coach/features/recommendations/domain/entities/recommendation_type.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_context.dart';
 import 'package:life_coach/features/recommendations/domain/entities/user_goal.dart';
+import 'package:life_coach/features/recommendations/domain/repositories/feedback_repository.dart';
 import 'package:life_coach/features/recommendations/domain/services/user_context_builder.dart';
 import 'package:life_coach/features/recommendations/domain/usecases/generate_recommendations_usecase.dart';
+import 'package:life_coach/features/recommendations/domain/usecases/record_feedback_usecase.dart';
 import 'package:life_coach/features/recommendations/presentation/cubit/recommendations_cubit.dart';
 import 'package:life_coach/features/recommendations/presentation/cubit/recommendations_state.dart';
 
 class _FakeNotifier implements RecommendationNotifier {
   @override
   Future<void> notify(List<Recommendation> recommendations) async {}
+}
+
+class _FakeFeedbackRepo implements FeedbackRepository {
+  int recordCount = 0;
+  @override
+  Future<void> record({
+    required RecommendationType type,
+    required RecommendationFeedback feedback,
+    required DateTime at,
+  }) async => recordCount++;
+  @override
+  Future<List<FeedbackEvent>> getAll() async => [];
 }
 
 class _FakePrefs implements UserPreferencesRepository {
@@ -60,29 +76,38 @@ GenerateRecommendationsUseCase _useCase({
 );
 
 void main() {
+  final feedbackRepo = _FakeFeedbackRepo();
+  final cubit = RecommendationsCubit(
+    _useCase(
+      recs: const [
+        Recommendation(
+          type: RecommendationType.movement,
+          message: 'yürü',
+          priority: 3,
+        ),
+      ],
+    ),
+    _FakeNotifier(),
+    _FakePrefs(),
+    RecordFeedbackUseCase(feedbackRepo),
+  );
   test('load: başarılıysa success + öneriler', () async {
-    final cubit = RecommendationsCubit(
-      _useCase(
-        recs: const [
-          Recommendation(
-            type: RecommendationType.movement,
-            message: 'yürü',
-            priority: 3,
-          ),
-        ],
-      ),
-      _FakeNotifier(),
-      _FakePrefs(),
-    );
     await cubit.load();
     expect(cubit.state.status, RecommendationsStatus.success);
     expect(cubit.state.recommendations.length, 1);
+  });
+  test('recordFeedback kartı listeden kaldırır', () async {
+    await cubit.load();
+    final rec = cubit.state.recommendations.first;
+    cubit.recordFeedback(rec, RecommendationFeedback.done);
+    expect(cubit.state.recommendations.contains(rec), isFalse);
   });
   test('load: health başarısızsa failure', () async {
     final cubit = RecommendationsCubit(
       _useCase(fail: true),
       _FakeNotifier(),
       _FakePrefs(),
+      RecordFeedbackUseCase(feedbackRepo),
     );
 
     await cubit.load();
