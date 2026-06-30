@@ -11,6 +11,8 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - workmanager_apple (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
@@ -19,6 +21,7 @@ DEPENDENCIES:
   - flutter_timezone (from `.symlinks/plugins/flutter_timezone/ios`)
   - health (from `.symlinks/plugins/health/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - workmanager_apple (from `.symlinks/plugins/workmanager_apple/ios`)
 
 EXTERNAL SOURCES:
   device_info_plus:
@@ -33,6 +36,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/health/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  workmanager_apple:
+    :path: ".symlinks/plugins/workmanager_apple/ios"
 
 SPEC CHECKSUMS:
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
@@ -41,6 +46,7 @@ SPEC CHECKSUMS:
   flutter_timezone: 7c838e17ffd4645d261e87037e5bebf6d38fe544
   health: 4decf5d74e8f54c58a8c07a385fc72f629a831d9
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
+  workmanager_apple: 904529ae31e97fc5be632cf628507652294a0778
 
 PODFILE CHECKSUM: 53a6aebc29ccee84c41f92f409fc20cd4ca011f1
 
