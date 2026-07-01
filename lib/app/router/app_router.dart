@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:life_coach/app/router/app_routes.dart';
 import 'package:life_coach/features/dashboard/presentation/view/dashboard.dart';
+import 'package:life_coach/features/notifications/presentation/view/settings.dart';
 import 'package:life_coach/features/onboarding/presentation/view/onboarding.dart';
 import 'package:life_coach/features/onboarding/presentation/view/profile.dart';
-import 'package:life_coach/features/settings/presentation/view/settings.dart';
 
 class OnboardingGate {
   static bool isComplete = false; // bootstrap'ta set edilecek

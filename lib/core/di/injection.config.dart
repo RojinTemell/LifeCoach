@@ -29,16 +29,22 @@ import 'package:life_coach/features/health_data/domain/repositories/health_repos
     as _i903;
 import 'package:life_coach/features/notifications/data/repositiories/notification_log_impl.dart'
     as _i957;
+import 'package:life_coach/features/notifications/data/repositiories/notification_preferences_repository_impl.dart'
+    as _i386;
 import 'package:life_coach/features/notifications/data/repositiories/quiet_hours_repository_impl.dart'
     as _i835;
 import 'package:life_coach/features/notifications/domain/repositories/notification_log.dart'
     as _i1055;
+import 'package:life_coach/features/notifications/domain/repositories/notification_preferences_repository.dart'
+    as _i372;
 import 'package:life_coach/features/notifications/domain/repositories/quiet_hours_repository.dart'
     as _i908;
 import 'package:life_coach/features/notifications/domain/services/recommendation_notifier.dart'
     as _i172;
 import 'package:life_coach/features/notifications/domain/services/recommendation_notifier_impl.dart'
     as _i333;
+import 'package:life_coach/features/notifications/presentation/cubit/notification_settings_cubit.dart'
+    as _i811;
 import 'package:life_coach/features/onboarding/data/repositories/user_preferences_repository_impl.dart'
     as _i36;
 import 'package:life_coach/features/onboarding/domain/repositories/user_preferences_repository.dart'
@@ -118,11 +124,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i313.FeedbackRepository>(
       () => _i703.FeedbackRepositoryImpl(gh<_i460.SharedPreferences>()),
     );
-    gh.lazySingleton<_i172.RecommendationNotifier>(
-      () => _i333.RecommendationNotifierImpl(
-        gh<_i998.NotificationService>(),
-        gh<_i908.QuietHoursRepository>(),
-        gh<_i1055.NotificationLog>(),
+    gh.lazySingleton<_i372.NotificationPreferencesRepository>(
+      () => _i386.NotificationPreferencesRepositoryImpl(
+        gh<_i460.SharedPreferences>(),
       ),
     );
     gh.lazySingleton<_i106.RecommendationEngine>(
@@ -131,10 +135,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i684.RecordFeedbackUseCase>(
       () => _i684.RecordFeedbackUseCase(gh<_i313.FeedbackRepository>()),
     );
+    gh.lazySingleton<_i172.RecommendationNotifier>(
+      () => _i333.RecommendationNotifierImpl(
+        gh<_i998.NotificationService>(),
+        gh<_i908.QuietHoursRepository>(),
+        gh<_i1055.NotificationLog>(),
+        gh<_i372.NotificationPreferencesRepository>(),
+      ),
+    );
     gh.lazySingleton<_i903.HealthRepository>(
       () => _i407.HealthRepositoryImpl(
         gh<_i319.HealthDeviceDataSource>(),
         gh<_i653.HealthLocalDataSource>(),
+      ),
+    );
+    gh.factory<_i811.NotificationSettingsCubit>(
+      () => _i811.NotificationSettingsCubit(
+        gh<_i372.NotificationPreferencesRepository>(),
       ),
     );
     gh.factory<_i1012.DashboardCubit>(
